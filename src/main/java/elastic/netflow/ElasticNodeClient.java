@@ -118,7 +118,11 @@ public class ElasticNodeClient {
 					public void beforeBulk(long executionId, BulkRequest request) {
 						/**
 						 * Why did those methods not be run?<br>
-						 * Because we did not close the bulkProcessor.
+						 * Because we did not close the bulkProcessor to make it
+						 * flush cache?<br>
+						 * No, the reason is we do not wait those little seconds
+						 * to close the bulk-processor when it was set
+						 * FlushInterval after five second.
 						 */
 						System.out.println("BulkProcessor's beforeBulk.");
 					}
@@ -142,8 +146,11 @@ public class ElasticNodeClient {
 				.setFlushInterval(TimeValue.timeValueSeconds(5))
 				.setConcurrentRequests(1).build();
 
+		/**
+		 * " ' " --> " \" "
+		 */
 		bulkProcessor.add(new IndexRequest("asdf2014", "asdf", "1")
-				.source("{'name':'asdf'}"));
+				.source("{\"name\":\"asdf\"}"));
 		bulkProcessor.add(new DeleteRequest("asdf2014", "asdf", "2"));
 
 		try {
