@@ -1,4 +1,4 @@
-package elastic.netflow;
+package netflow.elastic;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
